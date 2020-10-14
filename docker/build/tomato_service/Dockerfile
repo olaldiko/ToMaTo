@@ -1,16 +1,17 @@
-FROM debian:jessie
+FROM debian:buster
 MAINTAINER Dennis Schwerdel <schwerdel@googlemail.com>
 
-RUN echo "deb http://httpredir.debian.org/debian unstable main" >> /etc/apt/sources.list
-ADD 01pinning /etc/apt/preferences.d/01pinning
+#RUN echo "deb http://httpredir.debian.org/debian unstable main" >> /etc/apt/sources.list
+#ADD 01pinning /etc/apt/preferences.d/01pinning
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install --no-install-recommends -y \
-  ca-certificates libssl-dev build-essential libffi-dev python-dev pypy busybox locales libsnappy1 libsnappy-dev wget \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends -y \
+  ca-certificates libssl-dev build-essential libffi-dev python-dev pypy busybox locales libsnappy1v5 libsnappy-dev wget python-pip \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ADD get-pip.py /tmp/get-pip.py
-RUN python /tmp/get-pip.py; rm /tmp/get-pip.py
-  
+#ADD get-pip.py /tmp/get-pip.py
+#RUN python /tmp/get-pip.py; rm /tmp/get-pip.py
+RUN python --version
+RUN pip install --upgrade wheel setuptools
 RUN pip install mongoengine\>=0.10,\<0.11 pymongo\>=3.0,\<3.1 pyopenssl msgpack-python\<0.5 pyyaml\<4 psutil
 
 RUN mkdir -p /tmp/snappy; cd /tmp/snappy; \
