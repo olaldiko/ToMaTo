@@ -1,0 +1,117 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>XML-RPC Interface &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Web-Frontend Documentation" href="../../../web/index.html" />
+    <link rel="prev" title="Connection types" href="../connections/index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../web/index.html" title="Web-Frontend Documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../connections/index.html" title="Connection types"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Hostmanager Documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="xml-rpc-interface">
+<h1>XML-RPC Interface<a class="headerlink" href="#xml-rpc-interface" title="Permalink to this headline">¶</a></h1>
+<p>The interface is an RPC interface, i.e. it offers a set of methods that can be called (with parameters) and that return a return value. The internal data format is XML but this should be transparent. The interface adheres the <a class="reference external" href="http://www.xml-rpc.com">XML-RPC</a> standard with the following modifications:</p>
+<ul class="simple">
+<li>It uses an <a class="reference external" href="http://ontosys.com/xml-rpc/extensions.php">extension for null-value encoding</a> that is not part of the standard. This extension is part of many implementations since the absence of the feature is seen as a flaw in the standard.</li>
+<li>It uses a special parameter encoding that allows for keyword arguments. If exactly two parameters are given, where the first one is a list and the second one is key/value-map the keyword mode is used. In the keyword mode, the first parameter (the list) is expanded and used as normal positional arguments nad the second argument (the key/value-map) is expanded and used as the keyword arguments.</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../connections/index.html"
+                        title="previous chapter">Connection types</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../../web/index.html"
+                        title="next chapter">Web-Frontend Documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/hostmanager/tomato/lib/xmlrpc.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../web/index.html" title="Web-Frontend Documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../connections/index.html" title="Connection types"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Hostmanager Documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Device Templates &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Accounting data types" href="accountingdata.html" />
+    <link rel="prev" title="Packet Capturing" href="packetcapturing.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="accountingdata.html" title="Accounting data types"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="packetcapturing.html" title="Packet Capturing"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="device-templates">
+<h1>Device Templates<a class="headerlink" href="#device-templates" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="template-distribution">
+<h2>Template distribution<a class="headerlink" href="#template-distribution" title="Permalink to this headline">¶</a></h2>
+<p>The device templates are distributed using the bittorrent protocol. This way the templates can be
+distributed among the hosts without a noteworthy central component.</p>
+<p>For the bittorrent disctribution the backend and all hosts run a bittorrent client that
+automatically downloads and uploads the contents of torrent files in a certain directory.
+The backend also runs a so called bittorrent tracker, i.e. a central registry for the bittrorrent
+protocol that keeps track of all available peers for a torrent file.</p>
+<p>The backend periodically checks that all templates are known to all hosts and are up-to-date.
+Otherwise the backend will create resource entries for the missing templates containing the torrent
+information. Since the torrent information has a size of several KiB (depending on the content
+size) the host will include an MD5 hash in its information and the backend will only update the
+torrent information when it does not match the hash.</p>
+<p>The host will periodically check the file size of the templates and compare them to the information
+given in the torrent file to determine if the download has finished.</p>
+</div>
+<div class="section" id="template-setup">
+<h2>Template setup<a class="headerlink" href="#template-setup" title="Permalink to this headline">¶</a></h2>
+<p>To make them easier for users, templates should follow some common priciples.</p>
+<ol class="arabic simple">
+<li>Templates should be <strong>secure by default</strong>. This means that by default templates should only run
+services that are essential to the function of the template. For Linux templates that means
+that the SSH server will be deactivated by default and has to be activated manually by the
+user.</li>
+<li>Templates should <strong>only contain needed modifications</strong>. This means that a template should match
+the default version of the operating system except where adaptations are needed. This should
+help users that are already familiar with the operating system to use a template of that OS.</li>
+<li>Templates should <strong>be as small as possible</strong>. This means that templates will be compressed to
+save space and only include useful software. For some operating systems this might mean to
+remove some drivers and software that will never be used, to save space.</li>
+<li>Templates should be <strong>international but work in Germany</strong>. The language for all templates should
+be set to american english but the keyboard layout should be set to german.</li>
+<li>Templates should be <strong>self-explaining and helpful</strong>. That means that templates should contain
+some documentation on their special features and how to use them.</li>
+<li>Templates should <strong>not assume internet access</strong>. Without internet access the templates should
+still work unless they explicitly require an external service in the internet.</li>
+<li>Templates should <strong>use DHCP</strong>. All existing interfaces should be configured using DHCP.
+Hostname, DNS and time servers should also be used if included in the DHCP offer.</li>
+<li>Templates should <strong>require no login for local users and use a default password</strong>. This means
+that local users (via VNC) should be loggen in directly without entering a username or password.
+If a password is needed for some actions, the password should be the same for all templates.
+Note that templates still must be secured against the network and require passwords for
+non-local login.</li>
+<li>Templates should <strong>include useful tools</strong>. Not all devices will have internet access so
+templates should already include the most useful tools that users want installed. There is a
+clear trade-off between keeping a template small and including useful tools.</li>
+<li>Templates should be <strong>updated regularely</strong>. This is important in two cases:<ol class="loweralpha">
+<li>If the device has internet access, it is important that the template is up-to-date so that
+is initially secure. After device preparation, the user will have the responsibility to keep
+the system updated but it should be secure to start with.</li>
+<li>If the device does not have internet access, it is important that the template is not
+outdated because the user can not easily update it.</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="template-generation">
+<h2>Template generation<a class="headerlink" href="#template-generation" title="Permalink to this headline">¶</a></h2>
+<p>Scripts that can help to create and clean up templates can be found in the repository in the
+directory <code class="docutils literal notranslate"><span class="pre">contrib</span></code>. The scripts <code class="docutils literal notranslate"><span class="pre">create_kvm_template.sh</span></code> and <code class="docutils literal notranslate"><span class="pre">create_openvz_template.sh</span></code> can
+be used to create templates for debian-based systems in a semi-automatic way. The script
+<code class="docutils literal notranslate"><span class="pre">prepare_vm.sh</span></code> can be used to adapt a running system to be a proper template.</p>
+<div class="section" id="torrent-creation">
+<h3>Torrent creation<a class="headerlink" href="#torrent-creation" title="Permalink to this headline">¶</a></h3>
+<p>Torrent files for templates can be created using the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">btmakemetafile</span> <span class="n">TRACKERURL</span> <span class="n">FILENAME</span>
+</pre></div>
+</div>
+<p>where TRACKERURL is the URL of the tracker and FILENAME is the name of the template file.
+The result will be a torrent file, that is named like the template file with <code class="docutils literal notranslate"><span class="pre">.torrent</span></code> appended.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The ToMaTo backend includes a tracker that can be used for template torrents. Its URL can be determined by
+the backend API call <code class="xref py py-func docutils literal notranslate"><span class="pre">backend.tomato.api.host.server_info()</span></code>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Device Templates</a><ul>
+<li><a class="reference internal" href="#template-distribution">Template distribution</a></li>
+<li><a class="reference internal" href="#template-setup">Template setup</a></li>
+<li><a class="reference internal" href="#template-generation">Template generation</a><ul>
+<li><a class="reference internal" href="#torrent-creation">Torrent creation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="packetcapturing.html"
+                        title="previous chapter">Packet Capturing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="accountingdata.html"
+                        title="next chapter">Accounting data types</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docs/templates.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="accountingdata.html" title="Accounting data types"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="packetcapturing.html" title="Packet Capturing"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

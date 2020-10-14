@@ -1,0 +1,184 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Glossary &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Licenses &amp; Copyright information" href="license.html" />
+    <link rel="prev" title="Databases" href="databases.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="Licenses &amp; Copyright information"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="databases.html" title="Databases"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="glossary">
+<span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
+<dl class="glossary docutils">
+<dt id="term-api">API</dt>
+<dd>API is short for “Application programming interface”. Both the <em>backend</em> and the
+<em>hostmanager</em> provide APIs with which they can be used.</dd>
+<dt id="term-backend">Backend</dt>
+<dd>The backend is one of the parts of ToMaTo. It is the central part that manages all
+<em>resources</em>, <em>hosts</em>, <em>topologies</em> and users. In a ToMaTo-setup the backend is the only
+part that can only exist once. The backend uses the capabilities of one or more <em>hosts</em> to
+offer <em>topologies</em> to its users through one or more <em>frontends</em>.</dd>
+<dt id="term-cli">CLI</dt>
+<dd>The command-line interface is a simple way to control both the <em>backend</em> and the
+<em>hostmanager</em>. It is one of the <em>frontends</em>.</dd>
+<dt id="term-component">Component</dt>
+<dd>A component is either an <em>element</em> or a <em>connection</em>.</dd>
+<dt id="term-connection">Connection</dt>
+<dd>A connection is a relation between exactly two <em>elements</em>. The connnection can have
+attributes of its own.</dd>
+<dt id="term-connector">Connector</dt>
+<dd>This is a term from an older version of ToMaTo. Connectors are <em>elements</em> that are network
+elements.</dd>
+<dt id="term-device">Device</dt>
+<dd>This is a term from an older version of ToMaTo. A device is an <em>element</em> that is a virtual
+machine.</dd>
+<dt id="term-dict">Dict</dt>
+<dd>Dicts are key-value mappings in the python programming language. In a dict, each key has
+a value assigned to it. When used in an <em>API</em>, the keys are limited to strings and the
+keys are limited to serializable objects (numbers, strings, booleans, None, lists, dicts).</dd>
+<dt id="term-element">Element</dt>
+<dd>An element refers to virtual objects that the user can control. This includes end systems
+like virtual machine and scripts as well as networking components like switches, hubs or
+routers. Each element can have several attributes and child elements (VMs have network
+interfaces as child elements) and one <em>connection</em>.</dd>
+<dt id="term-entity">Entity</dt>
+<dd>An entity is a very general term for something that is controlled by either the <em>hostmanager</em>
+or the <em>backend</em>. This includes <em>elements</em>, <em>connections</em>, <em>topologies</em>, <em>users</em>, <em>resources</em>
+and much more.</dd>
+<dt id="term-frontend">Frontend</dt>
+<dd>ToMaTo frontends are a part of ToMaTo. Frontends connect to the <em>backend</em> and give users
+access to its capabilties by using the <em>backend API</em> and the users credentials. Several
+frontends exist (e.g. web-frontend and CLI) and can access a <em>backend</em> in parallel.</dd>
+<dt id="term-host">Host</dt>
+<dd>A host is a physical machine (computer or server) that hosts parts of <em>topologies</em>.
+Each host is managed by one <em>host manager</em>.</dd>
+<dt id="term-host-manager-or-hostmanager">Host manager (or Hostmanager)</dt>
+<dd>The host manager is one of the parts of ToMaTo. It has exclusive control over one <em>host</em> and
+offers its capabilities to one or more <em>backends</em>.</dd>
+<dt id="term-kvm">KVM</dt>
+<dd>KVM devices are heavy-weight virtual machines that emulate a whole computer with generic
+hardware. Most things that are possible on physical computers is also possible on KVM.
+Most operating systems run on KVM.</dd>
+<dt id="term-openvz">OpenVZ</dt>
+<dd>OpenVZ devices are light-weight virtual machines that translate kernel calls to kernel calls
+of the host kernel. OpenVZ offers complete usermode access to the virtual machines and a
+limited kernel-mode access.</dd>
+<dt id="term-profile">Profile</dt>
+<dd>Profiles define the resource boundaries for virtual machine <em>elements</em>. Depending on the VM
+technology, profiles define different attributes like RAM limit, disk space and number of
+CPUs.</dd>
+<dt id="term-repy">Repy</dt>
+<dd>Programmable devices are essentially scripts that can work with networking packages. These
+scripts can be written in a Python dialect called Repy and can read and write raw Ethernet
+packets to/from their network interfaces. Programmable devices are very light-weight as they
+are just small Python scripts.</dd>
+<dt id="term-resource">Resource</dt>
+<dd>Resources are a generic <em>entity</em> type for things that are present at <em>hosts</em> and can be used
+by <em>elements</em>. This includes <em>templates</em>, external networks but also available port numbers.</dd>
+<dt id="term-template">Template</dt>
+<dd>Templates are pre-installed disk images for virtual machine <em>elements</em>. Depending on the VM
+technology different templates with different operating systems and software exist. For
+<em>Repy</em> the template is the actual script that should be executed.</dd>
+<dt id="term-topology">Topology</dt>
+<dd>A topology is a virtual network containing topology <em>components</em> (i.e. <em>elements</em> and
+<em>connections</em>). For the user, a topology is a virtual world where he can run his experiment.</dd>
+</dl>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="databases.html"
+                        title="previous chapter">Databases</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">Licenses &amp; Copyright information</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docs/glossary.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="license.html" title="Licenses &amp; Copyright information"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="databases.html" title="Databases"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

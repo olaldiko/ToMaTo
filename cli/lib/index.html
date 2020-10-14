@@ -1,0 +1,251 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Upload / Download commands &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Link Emulation" href="../../docs/linkemulation.html" />
+    <link rel="prev" title="Command-Line-Client Documentation" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../docs/linkemulation.html" title="Link Emulation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Command-Line-Client Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Command-Line-Client Documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-cli.lib">
+<span id="upload-download-commands"></span><h1>Upload / Download commands<a class="headerlink" href="#module-cli.lib" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="cli.lib.createUrl">
+<code class="descclassname">cli.lib.</code><code class="descname">createUrl</code><span class="sig-paren">(</span><em>protocol</em>, <em>hostname</em>, <em>port</em>, <em>username=None</em>, <em>password=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib.html#createUrl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.createUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a URL for connecting to a server.</p>
+<dl class="docutils">
+<dt>Parameter <em>protocol</em>:</dt>
+<dd>Protocol of the server</dd>
+<dt>Parameter <em>hostname</em>:</dt>
+<dd>Address of the host of the server</dd>
+<dt>Parameter <em>port</em>:</dt>
+<dd>Port of the host server</dd>
+<dt>Parameter <em>ssl</em>:</dt>
+<dd>Boolean whether ssl should be used or not</dd>
+<dt>Parameter <em>username</em>:</dt>
+<dd>The username to use for login</dd>
+<dt>Parameter <em>password</em>:</dt>
+<dd>The password to user for login</dd>
+<dt>Return value:</dt>
+<dd>This method returns a full server URL.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.lib.getConnection">
+<code class="descclassname">cli.lib.</code><code class="descname">getConnection</code><span class="sig-paren">(</span><em>url</em>, <em>sslCert=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib.html#getConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.getConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a server proxy to a host using the given URL.</p>
+<dl class="docutils">
+<dt>Parameter <em>url</em>:</dt>
+<dd>URL of the server</dd>
+<dt>Parameter <em>sslCert</em>:</dt>
+<dd>SSL certificate to use for a ssl connection</dd>
+<dt>Return value:</dt>
+<dd>This method returns a server proxy object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.lib.tcpPortOpen">
+<code class="descclassname">cli.lib.</code><code class="descname">tcpPortOpen</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib.html#tcpPortOpen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.tcpPortOpen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a connection to a remote socket at address (host, port) and closes it to open the TCP port.</p>
+<dl class="docutils">
+<dt>Parameter <em>host</em>:</dt>
+<dd>Host address of the socket</dd>
+<dt>Parameter <em>port</em>:</dt>
+<dd>TCP port that will be opened</dd>
+<dt>Return value:</dt>
+<dd>This method returns a boolean which is true, if the TCP Port is open and false otherwise.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cli.lib.misc">
+<span id="advanced-link-commands"></span><h1>Advanced link commands<a class="headerlink" href="#module-cli.lib.misc" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="cli.lib.misc.is_superset">
+<code class="descclassname">cli.lib.misc.</code><code class="descname">is_superset</code><span class="sig-paren">(</span><em>obj1</em>, <em>obj2</em>, <em>path=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib/misc.html#is_superset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.misc.is_superset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether obj1 is a superset of obj2.</p>
+<dl class="docutils">
+<dt>Parameter <em>obj1</em>:</dt>
+<dd>Superset object</dd>
+<dt>Parameter <em>obj2</em>:</dt>
+<dd>Subset object</dd>
+<dt>Parameter <em>path</em>:</dt>
+<dd>Should be “” in initial call</dd>
+<dt>Return value:</dt>
+<dd>Returns a tuple with 2 arguments. The first argument is a boolean which is true, if obj1 is superset of obj2, false otherwise.
+The second argument returns a string if the first argument is false. The string contains the reason why obj1 is not a superset of obj2.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.lib.misc.link_check">
+<code class="descclassname">cli.lib.misc.</code><code class="descname">link_check</code><span class="sig-paren">(</span><em>id</em>, <em>ip</em>, <em>tries=5</em>, <em>waitBetween=5</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib/misc.html#link_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.misc.link_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the availability of a link by trying to reach him a certain number of tries.</p>
+<dl class="docutils">
+<dt>Parameter <em>id</em>:</dt>
+<dd>ID of device which should be reached</dd>
+<dt>Parameter <em>ip</em>:</dt>
+<dd>IP address of the ping target</dd>
+<dt>Parameter <em>tries</em>:</dt>
+<dd>Number of tries</dd>
+<dt>Parameter <em>waitBetween</em>:</dt>
+<dd>Time between each try</dd>
+<dt>Return value:</dt>
+<dd>Returns a boolean which is true, if the link was available within the number of tries, false otherwise.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.lib.misc.link_config">
+<code class="descclassname">cli.lib.misc.</code><code class="descname">link_config</code><span class="sig-paren">(</span><em>top</em>, <em>con</em>, <em>c</em>, <em>attrs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib/misc.html#link_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.misc.link_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures an link by modifying the certain attributes</p>
+<dl class="docutils">
+<dt>Parameter <em>top</em>:</dt>
+<dd>Topology in which the link can be found</dd>
+<dt>Parameter <em>con</em>:</dt>
+<dd>Link which should be modified</dd>
+<dt>Parameter <em>c</em>:</dt>
+<dd>Target interface</dd>
+<dt>Parameter <em>attrs</em>:</dt>
+<dd>Key value pair of attributes which should be configured</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.lib.misc.link_info">
+<code class="descclassname">cli.lib.misc.</code><code class="descname">link_info</code><span class="sig-paren">(</span><em>id</em>, <em>ip</em>, <em>samples=10</em>, <em>maxWait=5</em>, <em>oneWayAdapt=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/cli/lib/misc.html#link_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.lib.misc.link_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pings a target IP address from a certain device and returns the results.
+The number of samples and the maximum wait time for responds can be set.
+Also a one-way adaption of the results is possible.</p>
+<dl class="docutils">
+<dt>Parameter <em>id</em>:</dt>
+<dd>ID of device which should be used.</dd>
+<dt>Parameter <em>ip</em>:</dt>
+<dd>IP address of the ping target.</dd>
+<dt>Parameter <em>samples</em>:</dt>
+<dd>Number of messages to send.</dd>
+<dt>Parameter <em>maxWait</em>:</dt>
+<dd>Time to wait for a responds in seconds.</dd>
+<dt>Parameter <em>oneWayAdapt</em>:</dt>
+<dd>Change results to a one-way adaption.</dd>
+<dt>Return value:</dt>
+<dd>The return value of this method is a dict containing information
+about the route between the link and the destination.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">lossratio</span></code></dt>
+<dd>The loss ratio of the route between the link and the destination.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">delay</span></code></dt>
+<dd>The average round-trip time.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">delay_stddev</span></code></dt>
+<dd>The average standard deviation for the delay.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Upload / Download commands</a></li>
+<li><a class="reference internal" href="#module-cli.lib.misc">Advanced link commands</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Command-Line-Client Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../docs/linkemulation.html"
+                        title="next chapter">Link Emulation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cli/lib/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../docs/linkemulation.html" title="Link Emulation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Command-Line-Client Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Command-Line-Client Documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

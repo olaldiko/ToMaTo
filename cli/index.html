@@ -1,0 +1,223 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Command-Line-Client Documentation &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Upload / Download commands" href="lib/index.html" />
+    <link rel="prev" title="Web-Frontend Documentation" href="../web/index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lib/index.html" title="Upload / Download commands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../web/index.html" title="Web-Frontend Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="command-line-client-documentation">
+<h1>Command-Line-Client Documentation<a class="headerlink" href="#command-line-client-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-cli.tomato">
+<span id="basic-cli-functionality"></span><h2>Basic CLI functionality<a class="headerlink" href="#module-cli.tomato" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cli.tomato.getLocals">
+<code class="descclassname">cli.tomato.</code><code class="descname">getLocals</code><span class="sig-paren">(</span><em>api</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#getLocals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.getLocals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines the api with additional functionalities in one dictionary. It adds a list of all commands, a help method and
+a method to load and initialize python modules from a file.</p>
+<dl class="docutils">
+<dt>Parameter <em>api</em>:</dt>
+<dd>Connection to a host api</dd>
+<dt>Return value:</dt>
+<dd>This method returns a dictionary with a connection to a API, an help method and a method to load and initialize python modules from a file.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.tomato.parseArgs">
+<code class="descclassname">cli.tomato.</code><code class="descname">parseArgs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#parseArgs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.parseArgs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines required and optional arguments for the cli and parses them out of sys.argv.</p>
+<dl class="docutils">
+<dt>Available Arguments are:</dt>
+<dd><dl class="first last docutils">
+<dt>Argument <em>–help</em>:</dt>
+<dd>Prints a help text for the available arguments</dd>
+<dt>Argument <em>–url</em>:</dt>
+<dd>The whole URL of the server</dd>
+<dt>Argument <em>–protocol</em>:</dt>
+<dd>Protocol of the server</dd>
+<dt>Argument <em>–hostname</em>:</dt>
+<dd>Address of the host of the server</dd>
+<dt>Argument <em>–port</em>:</dt>
+<dd>Port of the host server</dd>
+<dt>Argument <em>–ssl</em>:</dt>
+<dd>Whether to use ssl or not</dd>
+<dt>Argument <em>–client_cert</em>:</dt>
+<dd>Path to the ssl certificate of the client</dd>
+<dt>Argument <em>–username</em>:</dt>
+<dd>The username to use for login</dd>
+<dt>Argument <em>–password</em>:</dt>
+<dd>The password to user for login</dd>
+<dt>Argument <em>–file</em>:</dt>
+<dd>Path to a file to execute</dd>
+<dt>Argument <em>arguments</em></dt>
+<dd>Python code to execute directly</dd>
+</dl>
+</dd>
+<dt>Return value:</dt>
+<dd>Parsed command-line arguments</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.tomato.run">
+<code class="descclassname">cli.tomato.</code><code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the command-line arguments, opens an API connection and creates access to the available commands of the host.
+It decides based on the options whether to directly execute python code or to execute a file or to grant access to the interactive cli.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.tomato.runFile">
+<code class="descclassname">cli.tomato.</code><code class="descname">runFile</code><span class="sig-paren">(</span><em>locals</em>, <em>file</em>, <em>options</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#runFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.runFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a connection to a remote socket at address (host, port) and closes it to open the TCP port.</p>
+<dl class="docutils">
+<dt>Parameter <em>locals</em>:</dt>
+<dd>Dict containing a connection to an API, a help function and a file load function.</dd>
+<dt>Parameter <em>file</em>:</dt>
+<dd>Path to the file which should be executed</dd>
+<dt>Parameter <em>options</em>:</dt>
+<dd>Command-line arguments which will be used to create an interactive console which executes the file.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.tomato.runInteractive">
+<code class="descclassname">cli.tomato.</code><code class="descname">runInteractive</code><span class="sig-paren">(</span><em>locals</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#runInteractive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.runInteractive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a interactive console based on the local available methods.</p>
+<dl class="docutils">
+<dt>Parameter <em>locals</em>:</dt>
+<dd>Dict containing a connection to an API, a help function and a file load function.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="cli.tomato.runSource">
+<code class="descclassname">cli.tomato.</code><code class="descname">runSource</code><span class="sig-paren">(</span><em>locals</em>, <em>source</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cli/tomato.html#runSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cli.tomato.runSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes a python code using an interpreter based on the methods provided by the API found in locals.</p>
+<dl class="docutils">
+<dt>Parameter <em>locals</em>:</dt>
+<dd>Dict containing a connection to an API, a help function and a file load function.</dd>
+<dt>Parameter <em>source</em>:</dt>
+<dd>Source code to execute</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="additional-functionality">
+<h2>Additional functionality<a class="headerlink" href="#additional-functionality" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lib/index.html">Upload / Download commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lib/index.html#module-cli.lib.misc">Advanced link commands</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Command-Line-Client Documentation</a><ul>
+<li><a class="reference internal" href="#module-cli.tomato">Basic CLI functionality</a></li>
+<li><a class="reference internal" href="#additional-functionality">Additional functionality</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../web/index.html"
+                        title="previous chapter">Web-Frontend Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lib/index.html"
+                        title="next chapter">Upload / Download commands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cli/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lib/index.html" title="Upload / Download commands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../web/index.html" title="Web-Frontend Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

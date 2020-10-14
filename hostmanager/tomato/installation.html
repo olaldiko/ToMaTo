@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hostmanager Installation &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hostmanager Configuration" href="config.html" />
+    <link rel="prev" title="Hostmanager Documentation" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config.html" title="Hostmanager Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Hostmanager Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Hostmanager Documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hostmanager-installation">
+<h1>Hostmanager Installation<a class="headerlink" href="#hostmanager-installation" title="Permalink to this headline">¶</a></h1>
+<p>The hostmanager offers the virtualization technology found on the host to backends.
+For simple installation of the hostmanager, it has been packaged for Debian systems.</p>
+<div class="section" id="installation-on-debian-systems">
+<h2>Installation on Debian systems<a class="headerlink" href="#installation-on-debian-systems" title="Permalink to this headline">¶</a></h2>
+<p>All of the following commands must be issued as <strong>root</strong>.</p>
+<ol class="arabic simple">
+<li>Adding the repository</li>
+</ol>
+<blockquote>
+<div><p>ToMaTo has its own repository for debian packages that needs to be added in order
+to install its packages.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;deb http://packages.tomato-lab.org/deb stable main&#39;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">tomato</span><span class="o">.</span><span class="n">list</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Accepting the repository key</li>
+</ol>
+<blockquote>
+<div><p>Since all packages are signed with keys, the repository key must be accepted once,
+otherwise the Debian package manager will complain on every update that the package
+is unauthorized.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">packages</span><span class="o">.</span><span class="n">tomato</span><span class="o">-</span><span class="n">lab</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">key</span><span class="o">.</span><span class="n">gpg</span> <span class="o">-</span><span class="n">O</span> <span class="o">-</span> <span class="o">|</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Updating the package lists</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Installing the Hostmanager package</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tomato</span><span class="o">-</span><span class="n">hostmanager</span>
+</pre></div>
+</div>
+<p>During the configuration phase of this package, dialogs will appear and propmt for
+information. All of these prompts can be answered by pressing <em>enter</em>.</p>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Optional: Install the Updater package</li>
+</ol>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tomato</span><span class="o">-</span><span class="n">updater</span>
+</pre></div>
+</div>
+<p>This package will add a cronjob that keeps your ToMaTo installation automatically up-to-date.</p>
+</div></blockquote>
+</div>
+<div class="section" id="installation-on-proxmox-systems">
+<h2>Installation on Proxmox systems<a class="headerlink" href="#installation-on-proxmox-systems" title="Permalink to this headline">¶</a></h2>
+<p>The target platform for the hostmanager is <a class="reference external" href="http://pve.proxmox.com">Proxmox VE</a>
+so there exists a meta-package specifically for Proxmox systems, that installs all
+additional software that is needed to use the full potential of Proxmox systems.</p>
+<p>To install the hostmanager on Proxmox systems, the <strong>steps 1 to 4 from above</strong> have to be
+executed. Additionally the package <code class="docutils literal notranslate"><span class="pre">tomato-host-proxmox</span></code> has to be installed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tomato</span><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">proxmox</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="after-the-installation">
+<h2>After the installation<a class="headerlink" href="#after-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>Some steps are needed to finalize the installation:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Installation of additional packages so that more <a class="reference internal" href="elements/index.html"><span class="doc">Element types</span></a> and
+<a class="reference internal" href="connections/index.html"><span class="doc">Connection types</span></a> become available. (For Proxmox hosts, the package
+<code class="docutils literal notranslate"><span class="pre">tomato-host-promxmox</span></code> installs all needed software.</li>
+<li><a class="reference internal" href="config.html"><span class="doc">Hostmanager Configuration</span></a></li>
+<li><a class="reference internal" href="backends.html"><span class="doc">Backend management</span></a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Hostmanager Installation</a><ul>
+<li><a class="reference internal" href="#installation-on-debian-systems">Installation on Debian systems</a></li>
+<li><a class="reference internal" href="#installation-on-proxmox-systems">Installation on Proxmox systems</a></li>
+<li><a class="reference internal" href="#after-the-installation">After the installation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Hostmanager Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="config.html"
+                        title="next chapter">Hostmanager Configuration</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/hostmanager/tomato/installation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="config.html" title="Hostmanager Configuration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="Hostmanager Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Hostmanager Documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

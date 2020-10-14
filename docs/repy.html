@@ -1,0 +1,273 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Repy &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Databases" href="databases.html" />
+    <link rel="prev" title="Accounting data types" href="accountingdata.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="databases.html" title="Databases"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="accountingdata.html" title="Accounting data types"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="repy">
+<h1>Repy<a class="headerlink" href="#repy" title="Permalink to this headline">¶</a></h1>
+<p>Repy is a turing-complete subset of Python that allows to run in a sandboxed environment.</p>
+<div class="section" id="python-and-repy">
+<h2>Python and Repy<a class="headerlink" href="#python-and-repy" title="Permalink to this headline">¶</a></h2>
+<p>The Python programming language is documented at <a class="reference external" href="http://docs.python.org/reference/index.html">docs.python.org/reference</a>.
+Repy is a reduced version of the Python programming language that allows to run scripts in a sandboxed environment. Repy is part of the <a class="reference external" href="http://seattle.cs.washington.edu">Seattle Testbed</a> and has an <a class="reference external" href="http://seattle.cs.washington.edu/wiki/ProgrammersPage">extensive documentation</a> in the Seattle Wiki.</p>
+</div>
+<div class="section" id="difference-between-repy-and-python">
+<h2>Difference between Repy and Python<a class="headerlink" href="#difference-between-repy-and-python" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>No imports, no external libraries. The <code class="docutils literal notranslate"><span class="pre">import</span></code> statement is forbidden in Repy.
+Some functionality from Python libraries is made available via special identifiers. (see below)</li>
+<li>No <code class="docutils literal notranslate"><span class="pre">global</span></code> variables. Instead Repy has a dictionary <code class="docutils literal notranslate"><span class="pre">mycontext</span></code> that can be used to store global variables.</li>
+<li>No user input via <code class="docutils literal notranslate"><span class="pre">input</span></code> or <code class="docutils literal notranslate"><span class="pre">raw_input</span></code>.</li>
+<li><dl class="first docutils">
+<dt>Some Python builtins are not available. The most important are</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">print</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">eval</span></code> and <code class="docutils literal notranslate"><span class="pre">execfile</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">lambda</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">reload</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">reversed</span></code> and <code class="docutils literal notranslate"><span class="pre">sorted</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">staticmethod</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">super</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">unicode</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">yield</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">hasattr</span></code>, <code class="docutils literal notranslate"><span class="pre">getattr</span></code> and <code class="docutils literal notranslate"><span class="pre">setattr</span></code></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>Parameters are passed as <code class="docutils literal notranslate"><span class="pre">callargs</span></code> instead of <code class="docutils literal notranslate"><span class="pre">sys.argv</span></code> and start with index 0 instead of 1 (<code class="docutils literal notranslate"><span class="pre">sys.argv[0]</span></code> is the script itself).</li>
+</ul>
+</div>
+<div class="section" id="methods-available-to-repy-scripts">
+<h2>Methods available to Repy scripts<a class="headerlink" href="#methods-available-to-repy-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="output-methods">
+<h3>Output methods<a class="headerlink" href="#output-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="echo">
+<code class="descname">echo</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#echo" title="Permalink to this definition">¶</a></dt>
+<dd><p>will print the message (followed by a newline) to the console.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="print_exc">
+<code class="descname">print_exc</code><span class="sig-paren">(</span><em>exception</em><span class="sig-paren">)</span><a class="headerlink" href="#print_exc" title="Permalink to this definition">¶</a></dt>
+<dd><p>will print an exception and a stack trace to the console.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="threading-locking-methods">
+<h3>Threading/Locking methods<a class="headerlink" href="#threading-locking-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="createlock">
+<code class="descname">createlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#createlock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="getthreadname">
+<code class="descname">getthreadname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#getthreadname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="createthread">
+<code class="descname">createthread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#createthread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="misc-methods">
+<h3>Misc. methods<a class="headerlink" href="#misc-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="exitall">
+<code class="descname">exitall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#exitall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="sleep">
+<code class="descname">sleep</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="headerlink" href="#sleep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="randombytes">
+<code class="descname">randombytes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#randombytes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="getruntime">
+<code class="descname">getruntime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#getruntime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="getlasterror">
+<code class="descname">getlasterror</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#getlasterror" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="networking-methods">
+<h3>Networking methods<a class="headerlink" href="#networking-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="tuntap_read">
+<code class="descname">tuntap_read</code><span class="sig-paren">(</span><em>dev</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tuntap_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>will read one packet from the given network device <cite>dev</cite> and return this packet as a byte string.
+The method will block until a packet arrives at the device but at most <cite>timeout</cite> seconds (forever if <cite>timeout=None</cite>). If no packet has been received before the timeout, <cite>None</cite> will be returned.
+It is an error if the device does not exist.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tuntap_read_any">
+<code class="descname">tuntap_read_any</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#tuntap_read_any" title="Permalink to this definition">¶</a></dt>
+<dd><p>will read one packet from any network device and return it.
+The return value will be a tuple <cite>(dev, packet)</cite> of the incoming device and the packet as a byte string.
+The first packet that arrives at a network device will be returned.
+The method will block until a packet arrives at a device but at most <cite>timeout</cite> seconds (forever if <cite>timeout=None</cite>). If no packet has been received before the timeout, <cite>(None, None)</cite> will be returned.
+It is an error to call this method if no network devices exist.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tuntap_send">
+<code class="descname">tuntap_send</code><span class="sig-paren">(</span><em>dev</em>, <em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#tuntap_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>will send the packet <cite>data</cite> via the network device <cite>dev</cite>. The packet must be a byte string.
+It is an error if the device does not exist.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tuntap_list">
+<code class="descname">tuntap_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tuntap_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>will return a list of all available network devices.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="tuntap_info">
+<code class="descname">tuntap_info</code><span class="sig-paren">(</span><em>dev</em><span class="sig-paren">)</span><a class="headerlink" href="#tuntap_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>will return a dictionary containing detailed information about the networking device <cite>dev</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="struct">
+<h3>Struct<a class="headerlink" href="#struct" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="http://docs.python.org/library/struct.html">struct library</a> is available via <cite>struct</cite> (no import needed). This library can be used to encode and decode binary data structures.</p>
+</div>
+</div>
+<div class="section" id="tomato-library">
+<h2>ToMaTo library<a class="headerlink" href="#tomato-library" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://github.com/dswd/ToMaTo/tree/master/repy/tomatolib">tomato library</a> contains implementations of protocols and nodes. This library is extensible, so please feel free to contribute.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Repy</a><ul>
+<li><a class="reference internal" href="#python-and-repy">Python and Repy</a></li>
+<li><a class="reference internal" href="#difference-between-repy-and-python">Difference between Repy and Python</a></li>
+<li><a class="reference internal" href="#methods-available-to-repy-scripts">Methods available to Repy scripts</a><ul>
+<li><a class="reference internal" href="#output-methods">Output methods</a></li>
+<li><a class="reference internal" href="#threading-locking-methods">Threading/Locking methods</a></li>
+<li><a class="reference internal" href="#misc-methods">Misc. methods</a></li>
+<li><a class="reference internal" href="#networking-methods">Networking methods</a></li>
+<li><a class="reference internal" href="#struct">Struct</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tomato-library">ToMaTo library</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="accountingdata.html"
+                        title="previous chapter">Accounting data types</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="databases.html"
+                        title="next chapter">Databases</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docs/repy.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="databases.html" title="Databases"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="accountingdata.html" title="Accounting data types"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Databases &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Repy" href="repy.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="glossary.html" title="Glossary"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="repy.html" title="Repy"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="databases">
+<h1>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h1>
+<p>The ToMaTo backend needs a database to store information about hosts, topologies and users. The choice of this database is important for the performance of the ToMaTo backend.</p>
+<p>ToMaTo uses Django as a database backend so the <a class="reference external" href="https://docs.djangoproject.com/en/dev/ref/databases/">Django database documentation</a> applies to ToMaTo as well.</p>
+<div class="section" id="sqlite">
+<h2>SQLite<a class="headerlink" href="#sqlite" title="Permalink to this headline">¶</a></h2>
+<p>Note that SQLite lacks some features of real databases and thus is not suitable for running or developing ToMaTo.</p>
+</div>
+<div class="section" id="postgresql">
+<h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
+<p>PostgreSQL is the database that is used in the German-Lab installation. It is a full-featured database with good performance.</p>
+<div class="section" id="raising-the-connection-limit">
+<h3>Raising the connection limit<a class="headerlink" href="#raising-the-connection-limit" title="Permalink to this headline">¶</a></h3>
+<p>The default database connection limit of PostgreSQL is set to 100 which can be reached by ToMaTo if several users are running a lot tasks in parallel. In the config file <code class="docutils literal notranslate"><span class="pre">postgresql.conf</span></code> the value <code class="docutils literal notranslate"><span class="pre">max_connections</span></code> can be raised to allow more concurrent connections. If the postgres server then hits the shared memory limit, the sysctl value <code class="docutils literal notranslate"><span class="pre">kernel.shmmax</span></code> needs to be increased. (See <a class="reference external" href="http://www.postgresql.org/docs/current/static/kernel-resources.html">the PostgreSQl documentation</a> for more details.)</p>
+</div>
+</div>
+<div class="section" id="exporting-and-importing-the-tomato-data">
+<h2>Exporting and importing the ToMaTo data<a class="headerlink" href="#exporting-and-importing-the-tomato-data" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">manage.py</span></code> script that comes with the ToMaTo backend can be used to dump and load the database contents in a generic database-agnostic format. These commands might only work when run as user <code class="docutils literal notranslate"><span class="pre">tomato</span></code>, so <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">-u</span> <span class="pre">tomato</span> <span class="pre">./manage.py</span> <span class="pre">...</span></code>. Also note that the commands only work when the database is up-to-date with the current layout in the code. (See migration for details)</p>
+<div class="section" id="dumping-the-database">
+<h3>Dumping the database<a class="headerlink" href="#dumping-the-database" title="Permalink to this headline">¶</a></h3>
+<p>The following command dumps the database to a file named <code class="docutils literal notranslate"><span class="pre">dump.json</span></code> in the current directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py dumpdata tomato south &gt; dump.json
+</pre></div>
+</div>
+</div>
+<div class="section" id="loading-the-data-into-the-database">
+<h3>Loading the data into the database<a class="headerlink" href="#loading-the-data-into-the-database" title="Permalink to this headline">¶</a></h3>
+<p>The following command load a dump from a file named <code class="docutils literal notranslate"><span class="pre">dump.json</span></code> into the database. (Note that the file extension must be skipped in this command)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./manage.py loaddata dump
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="database-migrations">
+<h2>Database migrations<a class="headerlink" href="#database-migrations" title="Permalink to this headline">¶</a></h2>
+<p>As the database layout of ToMaTo changes, the database must be migrated to the new layout. ToMaTo automatically migrates old database schemas to the newest one. (Backups should still be made before the migration.)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Databases</a><ul>
+<li><a class="reference internal" href="#sqlite">SQLite</a></li>
+<li><a class="reference internal" href="#postgresql">PostgreSQL</a><ul>
+<li><a class="reference internal" href="#raising-the-connection-limit">Raising the connection limit</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exporting-and-importing-the-tomato-data">Exporting and importing the ToMaTo data</a><ul>
+<li><a class="reference internal" href="#dumping-the-database">Dumping the database</a></li>
+<li><a class="reference internal" href="#loading-the-data-into-the-database">Loading the data into the database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-migrations">Database migrations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="repy.html"
+                        title="previous chapter">Repy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="glossary.html"
+                        title="next chapter">Glossary</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/docs/databases.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="glossary.html" title="Glossary"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="repy.html" title="Repy"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">ToMaTo 3 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

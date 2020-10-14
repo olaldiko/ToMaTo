@@ -1,0 +1,326 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cli.tomato &#8212; ToMaTo 3 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cli.tomato</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">xmlrpclib</span><span class="o">,</span> <span class="nn">code</span><span class="o">,</span> <span class="nn">argparse</span><span class="o">,</span> <span class="nn">getpass</span><span class="o">,</span> <span class="nn">readline</span><span class="o">,</span> <span class="nn">rlcompleter</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">imp</span><span class="o">,</span> <span class="nn">ssl</span><span class="o">,</span> <span class="nn">urlparse</span>
+<span class="kn">from</span> <span class="nn">lib</span> <span class="kn">import</span> <span class="n">getConnection</span><span class="p">,</span> <span class="n">createUrl</span>
+<span class="kn">from</span> <span class="nn">lib.upload_download</span> <span class="kn">import</span> <span class="n">upload</span><span class="p">,</span> <span class="n">download</span><span class="p">,</span> <span class="n">upload_and_use_rextfv</span><span class="p">,</span> <span class="n">upload_and_use_image</span><span class="p">,</span> <span class="n">download_image</span><span class="p">,</span> <span class="n">download_rextfv</span>
+
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+
+<span class="kn">from</span> <span class="nn">lib</span> <span class="kn">import</span> <span class="n">getConnection</span><span class="p">,</span> <span class="n">createUrl</span>
+
+<div class="viewcode-block" id="parseArgs"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.parseArgs">[docs]</a><span class="k">def</span> <span class="nf">parseArgs</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Defines required and optional arguments for the cli and parses them out of sys.argv.</span>
+<span class="sd">	</span>
+<span class="sd">	Available Arguments are:</span>
+<span class="sd">		Argument *--help*:</span>
+<span class="sd">			Prints a help text for the available arguments</span>
+<span class="sd">		Argument *--url*:</span>
+<span class="sd">			The whole URL of the server</span>
+<span class="sd">		Argument *--protocol*:</span>
+<span class="sd">			Protocol of the server</span>
+<span class="sd">		Argument *--hostname*:</span>
+<span class="sd">			Address of the host of the server</span>
+<span class="sd">		Argument *--port*:</span>
+<span class="sd">			Port of the host server</span>
+<span class="sd">		Argument *--ssl*:</span>
+<span class="sd">			Whether to use ssl or not</span>
+<span class="sd">		Argument *--client_cert*:</span>
+<span class="sd">			Path to the ssl certificate of the client</span>
+<span class="sd">		Argument *--username*:</span>
+<span class="sd">			The username to use for login</span>
+<span class="sd">		Argument *--password*:</span>
+<span class="sd">			The password to user for login</span>
+<span class="sd">		Argument *--file*:</span>
+<span class="sd">			Path to a file to execute</span>
+<span class="sd">		Argument *arguments*</span>
+<span class="sd">			Python code to execute directly</span>
+<span class="sd">		</span>
+<span class="sd">	Return value:</span>
+<span class="sd">		Parsed command-line arguments</span>
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;ToMaTo RPC Client&quot;</span><span class="p">,</span> <span class="n">add_help</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--help&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;help&#39;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--url&quot;</span> <span class="p">,</span> <span class="s2">&quot;-u&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the whole URL of the server&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--protocol&quot;</span> <span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;http+xmlrpc&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the protocol of the server&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--hostname&quot;</span> <span class="p">,</span> <span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the host of the server&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the port of the server&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--ssl&quot;</span><span class="p">,</span> <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;whether to use ssl&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--client_cert&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path of the ssl certificate&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--username&quot;</span><span class="p">,</span> <span class="s2">&quot;-U&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the username to use for login&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--password&quot;</span><span class="p">,</span> <span class="s2">&quot;-P&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the password to use for login&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--keyring&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Use your system keyring to manage the password. When used with --password, this overwrites the stored password.&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--reset-keyring&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+	                    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Reset the password in your keyring. When used with --keyring or --password, this overwrites the stored password.&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--file&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;a file to execute&quot;</span><span class="p">)</span>
+	<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;python code to execute directly&quot;</span><span class="p">)</span>
+	<span class="n">options</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">username</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">client_cert</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span><span class="p">):</span>
+		<span class="n">options</span><span class="o">.</span><span class="n">username</span><span class="o">=</span><span class="n">raw_input</span><span class="p">(</span><span class="s2">&quot;Username: &quot;</span><span class="p">)</span>
+
+
+	<span class="n">KEYRING_SERVICE_NAME</span> <span class="o">=</span> <span class="s2">&quot;ToMaTo&quot;</span>
+	<span class="n">KEYRING_USER_NAME</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+	<span class="n">keyring</span> <span class="o">=</span> <span class="kc">None</span>
+	<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">keyring</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">reset_keyring</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>  <span class="c1"># if keyring is unavailable, simply ignore it.</span>
+			<span class="kn">import</span> <span class="nn">keyring</span>
+
+			<span class="c1"># keyring content to be resetted</span>
+			<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">reset_keyring</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">keyring</span><span class="o">.</span><span class="n">delete_password</span><span class="p">(</span><span class="n">KEYRING_SERVICE_NAME</span><span class="p">,</span> <span class="n">KEYRING_USER_NAME</span><span class="p">)</span>
+				<span class="k">except</span> <span class="n">keyring</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">PasswordDeleteError</span><span class="p">:</span>
+					<span class="k">pass</span>
+
+			<span class="c1"># no password explicitly passed. options.keyring must be True here due to outer if-condition.</span>
+			<span class="c1"># -&gt; get the password</span>
+			<span class="k">elif</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">password</span><span class="p">:</span>
+				<span class="n">options</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">keyring</span><span class="o">.</span><span class="n">get_password</span><span class="p">(</span><span class="n">KEYRING_SERVICE_NAME</span><span class="p">,</span> <span class="n">KEYRING_USER_NAME</span><span class="p">)</span>
+
+			<span class="c1"># password explicitly passed. options.keyring is still True here -&gt; store the password</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">keyring</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">KEYRING_SERVICE_NAME</span><span class="p">,</span> <span class="n">KEYRING_USER_NAME</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+				<span class="k">except</span> <span class="n">keyring</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">PasswordSetError</span><span class="p">:</span>
+					<span class="k">pass</span>
+		<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+			<span class="nb">print</span> <span class="s2">&quot;Python package &#39;keyring&#39; is required to use keyring features.&quot;</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">password</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">client_cert</span> <span class="ow">or</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span><span class="p">):</span>
+		<span class="n">options</span><span class="o">.</span><span class="n">password</span><span class="o">=</span><span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s2">&quot;Password: &quot;</span><span class="p">)</span>
+
+		<span class="c1"># store password in keyring if available and selected</span>
+		<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">keyring</span> <span class="ow">and</span> <span class="n">keyring</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">keyring</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">KEYRING_SERVICE_NAME</span><span class="p">,</span> <span class="n">KEYRING_USER_NAME</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+			<span class="k">except</span> <span class="n">keyring</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">PasswordSetError</span><span class="p">:</span>
+				<span class="k">pass</span>
+
+	<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">ssl</span> <span class="ow">and</span> <span class="n">options</span><span class="o">.</span><span class="n">protocol</span> <span class="o">==</span> <span class="s2">&quot;http+xmlrpc&quot;</span><span class="p">:</span>
+		<span class="n">options</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;https+xmlrpc&quot;</span>
+	<span class="k">return</span> <span class="n">options</span></div>
+
+
+<div class="viewcode-block" id="runInteractive"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.runInteractive">[docs]</a><span class="k">def</span> <span class="nf">runInteractive</span><span class="p">(</span><span class="nb">locals</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Creates a interactive console based on the local available methods.</span>
+
+<span class="sd">	Parameter *locals*:</span>
+<span class="sd">		Dict containing a connection to an API, a help function and a file load function.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;ToMaTo&quot;</span>
+	<span class="n">readline</span><span class="o">.</span><span class="n">parse_and_bind</span><span class="p">(</span><span class="s2">&quot;tab: complete&quot;</span><span class="p">)</span>
+	<span class="n">readline</span><span class="o">.</span><span class="n">set_completer</span><span class="p">(</span><span class="n">rlcompleter</span><span class="o">.</span><span class="n">Completer</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span><span class="o">.</span><span class="n">complete</span><span class="p">)</span>
+	<span class="n">console</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">InteractiveConsole</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span>
+	<span class="n">console</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="s1">&#39;Type &quot;help()&quot; or &quot;help(method)&quot; for more information.&#39;</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="runSource"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.runSource">[docs]</a><span class="k">def</span> <span class="nf">runSource</span><span class="p">(</span><span class="nb">locals</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Executes a python code using an interpreter based on the methods provided by the API found in locals.</span>
+
+<span class="sd">	Parameter *locals*:</span>
+<span class="sd">		Dict containing a connection to an API, a help function and a file load function.</span>
+<span class="sd">	Parameter *source*:</span>
+<span class="sd">		Source code to execute</span>
+
+<span class="sd">	</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">interpreter</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">InteractiveInterpreter</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span>
+	<span class="n">interpreter</span><span class="o">.</span><span class="n">runsource</span><span class="p">(</span><span class="n">source</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="runFile"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.runFile">[docs]</a><span class="k">def</span> <span class="nf">runFile</span><span class="p">(</span><span class="nb">locals</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Opens a connection to a remote socket at address (host, port) and closes it to open the TCP port.</span>
+
+<span class="sd">	Parameter *locals*:</span>
+<span class="sd">		Dict containing a connection to an API, a help function and a file load function.</span>
+<span class="sd">	Parameter *file*:</span>
+<span class="sd">		Path to the file which should be executed</span>
+<span class="sd">	Parameter *options*:</span>
+<span class="sd">		Command-line arguments which will be used to create an interactive console which executes the file.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+	<span class="k">def</span> <span class="nf">shell</span><span class="p">():</span>
+		<span class="n">runInteractive</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;shell&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shell</span>
+	<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span><span class="p">:</span>
+		<span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+		<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;__hostname__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">hostname</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;__hostname__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">hostname</span>
+	<span class="n">__builtins__</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;__name__&quot;</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;__main__&quot;</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;__file__&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">file</span>
+	<span class="n">execfile</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">locals</span><span class="p">)</span>
+	<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="getLocals"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.getLocals">[docs]</a><span class="k">def</span> <span class="nf">getLocals</span><span class="p">(</span><span class="n">api</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Combines the api with additional functionalities in one dictionary. It adds a list of all commands, a help method and</span>
+<span class="sd">	a method to load and initialize python modules from a file.</span>
+
+<span class="sd">	Parameter *api*:</span>
+<span class="sd">		Connection to a host api</span>
+
+<span class="sd">	Return value:</span>
+<span class="sd">		This method returns a dictionary with a connection to a API, an help method and a method to load and initialize python modules from a file.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="nb">locals</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="k">def</span> <span class="nf">help</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+			<span class="nb">print</span> <span class="s2">&quot;Available methods:</span><span class="se">\t</span><span class="s2">Type help(method) for more infos.&quot;</span>
+			<span class="nb">print</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">api</span><span class="o">.</span><span class="n">_listMethods</span><span class="p">())</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+				<span class="n">method</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="nb">locals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="ow">is</span> <span class="n">method</span><span class="p">,</span> <span class="nb">locals</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="nb">print</span> <span class="s2">&quot;Signature: &quot;</span> <span class="o">+</span> <span class="n">api</span><span class="o">.</span><span class="n">_methodSignature</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+			<span class="nb">print</span> <span class="n">api</span><span class="o">.</span><span class="n">_methodHelp</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+		<span class="n">files</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="nb">dir</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">file</span><span class="p">)),</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+			<span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">file</span><span class="p">)</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+			<span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+		<span class="n">mod</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">load_source</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+		<span class="nb">locals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">mod</span>
+		<span class="k">return</span> <span class="n">mod</span>
+	<span class="nb">locals</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">help</span><span class="p">,</span> <span class="n">load</span><span class="o">=</span><span class="n">load</span><span class="p">)</span>
+	<span class="k">try</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">api</span><span class="o">.</span><span class="n">_listMethods</span><span class="p">():</span>
+			<span class="nb">locals</span><span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+	<span class="k">except</span> <span class="n">xmlrpclib</span><span class="o">.</span><span class="n">ProtocolError</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span>
+		<span class="nb">print</span> <span class="s2">&quot;Protocol Error </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">errcode</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">errmsg</span><span class="p">)</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">except</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLError</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+		<span class="nb">print</span> <span class="s2">&quot;SSL error: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">exc</span><span class="o">.</span><span class="n">strerror</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+	<span class="k">return</span> <span class="nb">locals</span></div>
+
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../cli/index.html#cli.tomato.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Parses the command-line arguments, opens an API connection and creates access to the available commands of the host.</span>
+<span class="sd">	It decides based on the options whether to directly execute python code or to execute a file or to grant access to the interactive cli.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">options</span> <span class="o">=</span> <span class="n">parseArgs</span><span class="p">()</span>
+	<span class="n">url</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">url</span> <span class="k">else</span> <span class="n">createUrl</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">hostname</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+	<span class="n">api</span> <span class="o">=</span> <span class="n">getConnection</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">client_cert</span><span class="p">)</span>
+	<span class="nb">locals</span> <span class="o">=</span> <span class="n">getLocals</span><span class="p">(</span><span class="n">api</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">_upload_and_use_rextfv</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">upload_and_use_rextfv</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;upload_and_use_rextfv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_upload_and_use_rextfv</span>
+
+	<span class="k">def</span> <span class="nf">_upload_and_use_image</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">upload_and_use_image</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;upload_and_use_image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_upload_and_use_image</span>
+
+	<span class="k">def</span> <span class="nf">_download_rextfv</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">download_rextfv</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;download_rextfv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_download_rextfv</span>
+
+	<span class="k">def</span> <span class="nf">_download_image</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">download_image</span><span class="p">(</span><span class="n">api</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="nb">locals</span><span class="p">[</span><span class="s2">&quot;download_image&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_download_image</span>
+
+	<span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
+		<span class="n">runSource</span><span class="p">(</span><span class="nb">locals</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">arguments</span><span class="p">))</span>
+	<span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+		<span class="n">runFile</span><span class="p">(</span><span class="nb">locals</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">runInteractive</span><span class="p">(</span><span class="nb">locals</span><span class="p">)</span></div>
+	
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">ToMaTo 3 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012, Dennis Schwerdel.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>
